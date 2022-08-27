@@ -474,14 +474,10 @@ OMX_GetHandle(OMX_OUT OMX_HANDLETYPE*     handle,
       if (!strncmp(component[cmp_index].so_lib_name, hwDecLib, strlen(hwDecLib)) ||
           !strncmp(component[cmp_index].so_lib_name, swDecLib, strlen(swDecLib))) {
         bool isVppEnabled = false;
-        if (isConfigStoreEnabled()) {
-          getConfigStoreBool("vpp", "enable", &isVppEnabled, false);
-        } else {
-          char value[PROPERTY_VALUE_MAX];
-          if ((property_get("vendor.media.vpp.enable", value, NULL))
-               && (!strcmp("1", value) || !strcmp("true", value))) {
-            isVppEnabled = true;
-          }
+        char value[PROPERTY_VALUE_MAX];
+        if ((property_get("vendor.media.vpp.enable", value, NULL))
+             && (!strcmp("1", value) || !strcmp("true", value))) {
+          isVppEnabled = true;
         }
         if (isVppEnabled) {
           DEBUG_PRINT("VPP property is enabled");
